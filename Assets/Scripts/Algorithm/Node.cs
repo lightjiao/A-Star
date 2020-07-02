@@ -17,14 +17,12 @@ namespace A_Star.Algorithm
         public NodeState State;
         public int X;
         public int Y;
-        private int i;
-        private int j;
 
-        public Node(NodeState state, int i, int j) : this()
+        public Node(int i, int j, NodeState state = NodeState.None)
         {
-            State = state;
-            this.i = i;
-            this.j = j;
+            this.X = i;
+            this.Y = j;
+            this.State = state;
         }
     }
 }
