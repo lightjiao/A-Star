@@ -163,7 +163,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37ab4e4498e2f1f489b490dac2616303, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiGrid: {fileID: 1490901619}
+  gridUI: {fileID: 1490901619}
 --- !u!4 &296854880
 Transform:
   m_ObjectHideFlags: 0

@@ -6,7 +6,7 @@ namespace A_Star.Algorithm
     public class Map : MonoBehaviour
     {
         [SerializeField] private UI.Map gridUI = null;
-        private const int gridSize = 50;
+        [SerializeField] private const int gridSize = 16;
         private List<List<Node>> gridData;
 
         private int obstacleNumber = gridSize / 8;
@@ -18,6 +18,16 @@ namespace A_Star.Algorithm
         {
             initMap();
             initObstacle();
+
+            gridUI.SetUp(gridSize);
+            foreach (var item in obstacleList)
+            {
+                gridUI.DrawNode(item.x, item.y, UI.Map.NodeColor.Black);
+            }
+
+            // draw start and destination
+            gridUI.DrawNode(0, 0, UI.Map.NodeColor.Green);
+            gridUI.DrawNode(gridSize - 1, gridSize - 1, UI.Map.NodeColor.Red);
         }
 
         private void initMap()
@@ -36,18 +46,21 @@ namespace A_Star.Algorithm
         private void initObstacle()
         {
             obstacleList = new List<(int x, int y)>();
+            var startObstacleList = new List<(int x, int y)>();
 
             // 初始化几个obstacle的端点
             obstacleList.Add((gridSize / 2, gridSize / 2));
+            startObstacleList.Add((gridSize / 2, gridSize / 2));
             for (int i = 0; i < obstacleNumber - 1; i++)
             {
                 int randX = Random.Range(0, gridSize);
                 int randY = Random.Range(0, gridSize);
                 obstacleList.Add((randX, randY));
+                startObstacleList.Add((randX, randY));
             }
 
             // 根据obstacle端点生成连续的obstacles
-            foreach (var (x, y) in obstacleList)
+            foreach (var (x, y) in startObstacleList)
             {
                 int newX = x;
                 int newY = y;
