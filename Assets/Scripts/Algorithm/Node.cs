@@ -2,17 +2,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Node : MonoBehaviour
+namespace A_Star.Algorithm
 {
-    // Start is called before the first frame update
-    void Start()
+    public struct Node
     {
-        
-    }
+        public enum NodeState
+        {
+            None,
+            Obstacle,
+            Finding,
+            Result,
+        }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        public NodeState State;
+        public int X;
+        public int Y;
+        private int i;
+        private int j;
+
+        public Node(NodeState state, int i, int j) : this()
+        {
+            State = state;
+            this.i = i;
+            this.j = j;
+        }
     }
 }

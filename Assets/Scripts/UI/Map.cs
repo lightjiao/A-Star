@@ -26,8 +26,8 @@ namespace A_Star.UI
             }
         }
 
-        public void ReDraw(List<List<NodeState>> map)
-        {
-        }
+        //public void ReDraw(List<List<NodeState>> map)
+        //{
+        //}
     }
 }

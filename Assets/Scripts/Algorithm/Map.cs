@@ -7,39 +7,31 @@ namespace A_Star.Algorithm
     {
         [SerializeField] private UI.Map uiGrid = null;
 
-        // init map(2D vector)
-        //      random obstcle
-        //      start point & end point
-        // A*
-
         private const int mapLength = 50;
-        private List<List<NodeState>> map;
-
-        public enum NodeState
-        {
-            None,
-            Obstacle,
-            Finding,
-            Result,
-        }
+        private List<List<Node>> map;
 
         private void Start()
         {
+            initMap();
+            initObstacle();
         }
 
         private void initMap()
         {
-            map = new List<List<NodeState>>(50);
+            map = new List<List<Node>>(mapLength);
             for (int i = 0; i < mapLength; i++)
             {
-                map[i] = new List<NodeState>(50);
+                map.Add(new List<Node>(mapLength));
+                for (int j = 0; j < mapLength; j++)
+                {
+                    map[i].Add(new Node(Node.NodeState.None, i, j));
+                }
             }
-
-            initObstacle();
         }
 
         private void initObstacle()
         {
+            // 
         }
     }
 }
