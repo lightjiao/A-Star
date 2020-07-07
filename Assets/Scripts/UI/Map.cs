@@ -37,7 +37,7 @@ namespace A_Star.UI
             }
         }
 
-        public enum NodeColor
+        private enum NodeColor
         {
             DefaultWhite,
             Red,
@@ -46,7 +46,39 @@ namespace A_Star.UI
             Black,
         }
 
-        public void DrawNode(int x, int y, NodeColor nodeColor)
+        public void DrawNode(int x, int y, Algorithm.Node.NodeState nodeState)
+        {
+            NodeColor nodeColor;
+
+            switch (nodeState)
+            {
+                case Algorithm.Node.NodeState.None:
+                    nodeColor = NodeColor.DefaultWhite;
+                    break;
+                case Algorithm.Node.NodeState.Start:
+                    nodeColor = NodeColor.Green;
+                    break;
+                case Algorithm.Node.NodeState.Destination:
+                    nodeColor = NodeColor.Red;
+                    break;
+                case Algorithm.Node.NodeState.Finding:
+                    nodeColor = NodeColor.Blue;
+                    break;
+                case Algorithm.Node.NodeState.Obstacle:
+                    nodeColor = NodeColor.Black;
+                    break;
+                case Algorithm.Node.NodeState.ResultPath:
+                    nodeColor = NodeColor.Green;
+                    break;
+                default:
+                    nodeColor = NodeColor.DefaultWhite;
+                    break;
+            }
+
+            this.drawNode(x, y, nodeColor);
+        }
+
+        private void drawNode(int x, int y, NodeColor nodeColor)
         {
             int nodeIndex = x + y * gridSize;
 

@@ -164,6 +164,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gridUI: {fileID: 1490901619}
+  gridSize: 16
 --- !u!4 &296854880
 Transform:
   m_ObjectHideFlags: 0

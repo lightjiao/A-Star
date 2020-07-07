@@ -10,38 +10,73 @@ namespace A_Star.Algorithm
 
         // Map Data
         [SerializeField] private int gridSize = 16;
-        private List<List<Node>> gridData;
+        private List<List<Node>> gridMapData;
 
         // Obstacles
         private List<Node> obstacleNodes;
         private int minObstacleLength = 3;
         private int maxObstacleLength;
 
-        // Start & Destination
-        private Node start;
-        private Node destination;
-
         private void Start()
         {
+            generateObstacleData();
             initMap();
-            initObstacle();
-            initStartAndDestination();
+
+            gridUI.SetUp(gridSize);
+            Redraw();
         }
 
-        public bool IsObstacle(Node node)
+        // PUBLIC
+
+        public Node GetStartNode()
         {
-            foreach (var obstacle in obstacleNodes)
+            return GetNode(0, 0);
+        }
+
+        public Node GetDestinationNode()
+        {
+            return GetNode(gridSize - 1, gridSize - 1);
+        }
+
+        public Node GetNode(int x, int y)
+        {
+            return gridMapData[x][y];
+        }
+
+        public bool IsValidNode(Node node)
+        {
+            return isInTheMap(node) && false == isObstacle(node);
+        }
+
+        public bool IsDestination(Node node)
+        {
+            return node.State == Node.NodeState.Destination;
+        }
+
+        public bool IsStart(Node node)
+        {
+            return node.State == Node.NodeState.Start;
+        }
+
+        public void Redraw()
+        {
+            foreach (var gridColumn in gridMapData)
             {
-                if (node.X == obstacle.X && node.Y == obstacle.Y)
+                foreach (var node in gridColumn)
                 {
-                    return true;
+                    gridUI.DrawNode(node.X, node.Y, node.State);
                 }
             }
-
-            return false;
         }
 
-        public bool IsInTheMap(Node node)
+        // PRIVATE
+
+        private bool isObstacle(Node node)
+        {
+            return node.State == Node.NodeState.Obstacle;
+        }
+
+        private bool isInTheMap(Node node)
         {
             if (node.X < 0 || node.Y < 0) return false;
             if (node.X >= gridSize || node.Y >= gridSize) return false;
@@ -49,33 +84,13 @@ namespace A_Star.Algorithm
             return true;
         }
 
-        public bool IsDestination(Node node)
+        private void generateObstacleData()
         {
-            return node.X == start.X && node.Y == start.Y;
-        }
-
-        private void initMap()
-        {
-            gridData = new List<List<Node>>(gridSize);
-            for (int i = 0; i < gridSize; i++)
-            {
-                gridData.Add(new List<Node>(gridSize));
-                for (int j = 0; j < gridSize; j++)
-                {
-                    gridData[i].Add(new Node(i, j));
-                }
-            }
-
-            gridUI.SetUp(gridSize);
-        }
-
-        private void initObstacle()
-        {
-            var headObstacleNodes = new List<Node>();
             int obstacleNumber = Mathf.Max(gridSize / 8, 3); // 至少3个障碍物
             maxObstacleLength = gridSize / 4;
 
             // 初始化几个obstacle的端点
+            var headObstacleNodes = new List<Node>();
             headObstacleNodes.Add(new Node(gridSize / 2, gridSize / 2));
             for (int i = 0; i < obstacleNumber - 1; i++)
             {
@@ -101,27 +116,36 @@ namespace A_Star.Algorithm
 
                     if (yAddition != 0)
                     {
-                        obstacleNodes.Add(new Node(newX, newY - yAddition));
+                        obstacleNodes.Add(new Node(newX, newY - yAddition, Node.NodeState.Obstacle));
                     }
 
-                    obstacleNodes.Add(new Node(newX, newY));
+                    obstacleNodes.Add(new Node(newX, newY, Node.NodeState.Obstacle));
                 }
-            }
-
-            // 绘制obstacle
-            foreach (var node in obstacleNodes)
-            {
-                gridUI.DrawNode(node.X, node.Y, UI.Map.NodeColor.Black);
             }
         }
 
-        private void initStartAndDestination()
+        private void initMap()
         {
-            start = new Node(0, 0);
-            destination = new Node(gridSize - 1, gridSize - 1);
+            gridMapData = new List<List<Node>>(gridSize);
+            for (int i = 0; i < gridSize; i++)
+            {
+                gridMapData.Add(new List<Node>(gridSize));
+                for (int j = 0; j < gridSize; j++)
+                {
+                    gridMapData[i].Add(new Node(i, j));
+                }
+            }
 
-            gridUI.DrawNode(start.X, start.Y, UI.Map.NodeColor.Green);
-            gridUI.DrawNode(destination.X, destination.Y, UI.Map.NodeColor.Red);
+            // init the start & desitination data
+            gridMapData[0][0].State = Node.NodeState.Start;
+            gridMapData[gridSize - 1][gridSize - 1].State = Node.NodeState.Destination;
+
+            // init obstacle data
+            foreach (var node in obstacleNodes)
+            {
+                if (false == isInTheMap(node)) continue;
+                gridMapData[node.X][node.Y].State = node.State;
+            }
         }
     }
 }
