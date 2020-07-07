@@ -93,21 +93,37 @@ namespace A_Star.Algorithm
 
         private void generateObstacleData()
         {
-            int obstacleNumber = Mathf.Max(gridSize / 8, 3); // 至少3个障碍物
+            int obstacleNumber = Mathf.Max(gridSize / 4, 3); // 至少3个障碍物
             maxObstacleLength = gridSize / 4;
 
             // 初始化几个obstacle的端点
             var headObstacleNodes = new List<Node>();
-            headObstacleNodes.Add(new Node(gridSize / 2, gridSize / 2));
-            for (int i = 0; i < obstacleNumber - 1; i++)
+            for (int i = 0; i < obstacleNumber; i++)
             {
                 int randX = Random.Range(0, gridSize);
                 int randY = Random.Range(0, gridSize);
                 headObstacleNodes.Add(new Node(randX, randY));
             }
 
-            // 根据obstacle端点生成连续的obstacles
             obstacleNodes = new List<Node>(headObstacleNodes);
+
+            // 中间斜插着一条障碍物
+            for (int i = gridSize / 4; i < gridSize * 3 / 4; i++)
+            {
+                for (int j = gridSize * 3 / 4; j >= gridSize / 4; j--)
+                {
+                    if (i + j != 16) continue;
+                    obstacleNodes.Add(new Node(i, j, Node.NodeState.Obstacle));
+                    obstacleNodes.Add(new Node(i, j + 1, Node.NodeState.Obstacle));
+                }
+            }
+
+            // 根据obstacle端点生成连续的obstacles
+            _generateObstacleNodes(headObstacleNodes);
+        }
+
+        private void _generateObstacleNodes(List<Node> headObstacleNodes)
+        {
             foreach (var node in headObstacleNodes)
             {
                 int newX = node.X;

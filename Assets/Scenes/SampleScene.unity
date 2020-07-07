@@ -151,7 +151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fc89616d67f5b143a11a496b88cda29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tickPerSecond: 5
+  tickPerSecond: 10
 --- !u!114 &296854879
 MonoBehaviour:
   m_ObjectHideFlags: 0
