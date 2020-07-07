@@ -17,7 +17,7 @@ namespace A_Star.Algorithm
         private int minObstacleLength = 3;
         private int maxObstacleLength;
 
-        private void Start()
+        public void SetUp()
         {
             generateObstacleData();
             initMap();

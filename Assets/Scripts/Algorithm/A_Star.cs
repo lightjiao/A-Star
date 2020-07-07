@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -23,9 +23,9 @@ namespace A_Star.Algorithm
          */
     public class A_Star : MonoBehaviour
     {
-        [SerializeField] float secondDelayToRun = 1f;
+        [SerializeField] float tickPerSecond = 3;
 
-        bool runed = false;
+        float timeBetweenRedraw;
 
         HashSet<Node> openSet;
         HashSet<Node> closeSet;
@@ -35,22 +35,23 @@ namespace A_Star.Algorithm
         private void Start()
         {
             map = GetComponent<Map>();
+            map.SetUp();
 
             openSet = new HashSet<Node>();
             closeSet = new HashSet<Node>();
+
+            timeBetweenRedraw = 1 / tickPerSecond;
+
+            StartCoroutine(algorithm());
         }
 
-        private void Update()
+        private IEnumerator reDraw()
         {
-            secondDelayToRun -= Time.deltaTime;
-            if (secondDelayToRun <= 0 && runed == false)
-            {
-                runed = true;
-                Algorithm();
-            }
+            yield return new WaitForSeconds(timeBetweenRedraw);
+            map.Redraw();
         }
 
-        public void Algorithm()
+        private IEnumerator algorithm()
         {
             map.Redraw();
 
@@ -64,13 +65,13 @@ namespace A_Star.Algorithm
 
                 if (node.State == Node.NodeState.Destination)
                 {
-                    calculateResultPath();
+                    yield return calculateResultPath();
                     break;
                 }
                 else
                 {
                     removeFromOpenSet(node);
-                    addToCloseSet(node);
+                    yield return addToCloseSet(node);
                     foreach (Node aroundNode in getAroundNodes(node))
                     {
                         if (aroundNode.State == Node.NodeState.Obstacle) continue;
@@ -110,10 +111,11 @@ namespace A_Star.Algorithm
             }
         }
 
-        private void addToCloseSet(Node node)
+        private IEnumerator addToCloseSet(Node node)
         {
             node.State = Node.NodeState.Finding;
             closeSet.Add(node);
+            yield return reDraw();
         }
 
         private void removeFromOpenSet(Node node)
@@ -121,11 +123,13 @@ namespace A_Star.Algorithm
             openSet.Remove(node);
         }
 
-        private void calculateResultPath()
+        private IEnumerator calculateResultPath()
         {
             var node = map.GetDestinationNode();
             while (node != null)
             {
+                yield return reDraw();
+
                 if (node.State != Node.NodeState.Destination)
                 {
                     node.State = Node.NodeState.ResultPath;
