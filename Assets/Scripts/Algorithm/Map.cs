@@ -40,6 +40,8 @@ namespace A_Star.Algorithm
 
         public Node GetNode(int x, int y)
         {
+            if (false == isInTheMap(x, y)) return null;
+
             return gridMapData[x][y];
         }
 
@@ -76,12 +78,17 @@ namespace A_Star.Algorithm
             return node.State == Node.NodeState.Obstacle;
         }
 
-        private bool isInTheMap(Node node)
+        private bool isInTheMap(int x, int y)
         {
-            if (node.X < 0 || node.Y < 0) return false;
-            if (node.X >= gridSize || node.Y >= gridSize) return false;
+            if (x < 0 || y < 0) return false;
+            if (x >= gridSize || y >= gridSize) return false;
 
             return true;
+        }
+
+        private bool isInTheMap(Node node)
+        {
+            return isInTheMap(node.X, node.Y);
         }
 
         private void generateObstacleData()

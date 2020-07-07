@@ -23,6 +23,10 @@ namespace A_Star.Algorithm
          */
     public class A_Star : MonoBehaviour
     {
+        [SerializeField] float secondDelayToRun = 1f;
+
+        bool runed = false;
+
         HashSet<Node> openSet;
         HashSet<Node> closeSet;
 
@@ -34,6 +38,16 @@ namespace A_Star.Algorithm
 
             openSet = new HashSet<Node>();
             closeSet = new HashSet<Node>();
+        }
+
+        private void Update()
+        {
+            secondDelayToRun -= Time.deltaTime;
+            if (secondDelayToRun <= 0 && runed == false)
+            {
+                runed = true;
+                Algorithm();
+            }
         }
 
         public void Algorithm()
@@ -59,6 +73,8 @@ namespace A_Star.Algorithm
                     addToCloseSet(node);
                     foreach (Node aroundNode in getAroundNodes(node))
                     {
+                        if (aroundNode.State == Node.NodeState.Obstacle) continue;
+
                         if (isInCloseSet(aroundNode)) continue;
                         if (isInOpenSet(aroundNode)) continue;
 
@@ -85,8 +101,11 @@ namespace A_Star.Algorithm
                 foreach (var yAddition in cordinateAdditions)
                 {
                     if (xAddition == 0 && yAddition == 0) continue;
-
-                    yield return map.GetNode(node.X + xAddition, node.Y + yAddition);
+                    var newNode = map.GetNode(node.X + xAddition, node.Y + yAddition);
+                    if (newNode != null)
+                    {
+                        yield return newNode;
+                    }
                 }
             }
         }
@@ -107,7 +126,10 @@ namespace A_Star.Algorithm
             var node = map.GetDestinationNode();
             while (node != null)
             {
-                node.State = Node.NodeState.ResultPath;
+                if (node.State != Node.NodeState.Destination)
+                {
+                    node.State = Node.NodeState.ResultPath;
+                }
 
                 node = node.parent;
             }
@@ -153,7 +175,7 @@ namespace A_Star.Algorithm
         // h(n)
         private int heuristicCost(Node node)
         {
-            return distance(node, map.GetStartNode());
+            return distance(node, map.GetDestinationNode());
         }
 
         // f(n) = g(n) + h(n)
