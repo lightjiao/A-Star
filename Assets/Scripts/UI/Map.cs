@@ -7,6 +7,7 @@ namespace A_Star.UI
 {
     public class Map : MonoBehaviour
     {
+        [SerializeField] private GameObject background = null;
         [SerializeField] private Node nodePrefab = null;
 
         private int gridSize;
@@ -18,6 +19,9 @@ namespace A_Star.UI
             var glg = GetComponent<GridLayoutGroup>();
             glg.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
             glg.constraintCount = gridSize;
+
+            var backgroundWidth = background.GetComponent<RectTransform>().rect.width;
+            glg.cellSize = new Vector2(backgroundWidth / gridSize, backgroundWidth / gridSize);
 
             /**
              * delete default children
