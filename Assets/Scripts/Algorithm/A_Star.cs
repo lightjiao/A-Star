@@ -65,7 +65,7 @@ namespace A_Star.Algorithm
 
                 if (node.State == Node.NodeState.Destination)
                 {
-                    yield return calculateResultPath();
+                    yield return calculateResultPath(node);
                     break;
                 }
                 else
@@ -123,9 +123,8 @@ namespace A_Star.Algorithm
             openSet.Remove(node);
         }
 
-        private IEnumerator calculateResultPath()
+        private IEnumerator calculateResultPath(Node node)
         {
-            var node = map.GetDestinationNode();
             while (node != null)
             {
                 yield return reDraw();

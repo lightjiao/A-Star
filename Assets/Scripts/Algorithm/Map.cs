@@ -108,11 +108,11 @@ namespace A_Star.Algorithm
             obstacleNodes = new List<Node>(headObstacleNodes);
 
             // 中间斜插着一条障碍物
-            for (int i = gridSize / 4; i < gridSize * 3 / 4; i++)
+            for (int i = gridSize * 3 / 8; i < gridSize * 5 / 8; i++)
             {
-                for (int j = gridSize * 3 / 4; j >= gridSize / 4; j--)
+                for (int j = gridSize * 5 / 8; j >= gridSize * 3 / 8; j--)
                 {
-                    if (i + j != 16) continue;
+                    if (i + j != gridSize) continue;
                     obstacleNodes.Add(new Node(i, j, Node.NodeState.Obstacle));
                     obstacleNodes.Add(new Node(i, j + 1, Node.NodeState.Obstacle));
                 }
