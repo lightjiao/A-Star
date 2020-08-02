@@ -11,27 +11,27 @@ namespace A_Star.UI
 
         public void SetBlue()
         {
-            image.color = new Color(0, 0, 100);
+            image.color = new Color32(0, 0, 255, 255);
         }
 
         public void SetGreen()
         {
-            image.color = new Color(0, 100, 0);
+            image.color = new Color32(0, 255, 0, 255);
         }
 
         public void SetRed()
         {
-            image.color = new Color(50, 0, 0);
+            image.color = new Color32(255, 0, 0, 255);
         }
 
         public void SetBlack()
         {
-            image.color = new Color(0, 0, 0);
+            image.color = new Color32(0, 0, 0, 255);
         }
 
         public void SetDefaultWhite()
         {
-            image.color = new Color(200, 200, 200);
+            image.color = new Color32(255, 255, 255, 255);
         }
     }
 }
