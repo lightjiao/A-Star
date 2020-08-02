@@ -28,6 +28,14 @@ namespace A_Star.Algorithm
             Redraw();
         }
 
+        public void Clear()
+        {
+            generateObstacleData();
+            initMap();
+
+            Redraw();
+        }
+
         // PUBLIC
 
         public Node GetStartNode()

@@ -33,6 +33,8 @@ namespace A_Star.Algorithm
 
         private Map map = null;
 
+        private Coroutine currentCoroutine = null;
+
         private void Start()
         {
             map = GetComponent<Map>();
@@ -40,10 +42,28 @@ namespace A_Star.Algorithm
 
             openSet = new HashSet<Node>();
             closeSet = new HashSet<Node>();
-
             timeBetweenRedraw = 1 / tickPerSecond;
 
-            StartCoroutine(algorithm());
+            StartAlgorithm();
+        }
+
+        public void StartAlgorithm()
+        {
+            map.Clear();
+            openSet.Clear();
+            closeSet.Clear();
+
+            startAlgorithmWrapper();
+        }
+
+        private void startAlgorithmWrapper()
+        {
+            if (currentCoroutine != null)
+            {
+                StopCoroutine(currentCoroutine);
+            }
+
+            currentCoroutine = StartCoroutine(algorithm());
         }
 
         private IEnumerator reDraw()
