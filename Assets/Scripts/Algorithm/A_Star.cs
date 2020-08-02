@@ -21,16 +21,17 @@ namespace A_Star.Algorithm
                         * 计算节点m的优先级
                         * 将节点m加入open_set中
          */
+
     public class A_Star : MonoBehaviour
     {
-        [SerializeField] float tickPerSecond = 3;
+        [SerializeField] private float tickPerSecond = 3;
 
-        float timeBetweenRedraw;
+        private float timeBetweenRedraw;
 
-        HashSet<Node> openSet;
-        HashSet<Node> closeSet;
+        private HashSet<Node> openSet;
+        private HashSet<Node> closeSet;
 
-        Map map = null;
+        private Map map = null;
 
         private void Start()
         {
@@ -169,7 +170,7 @@ namespace A_Star.Algorithm
             return closeSet.Contains(node);
         }
 
-        // g(n) 
+        // g(n)
         private int baseCost(Node node)
         {
             return distance(node, map.GetStartNode());
@@ -194,6 +195,5 @@ namespace A_Star.Algorithm
 
             return Mathf.Min(dx, dy) + Mathf.Abs(dx - dy);
         }
-
     }
 }

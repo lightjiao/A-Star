@@ -10,10 +10,12 @@ namespace A_Star.Algorithm
 
         // Map Data
         [SerializeField] private int gridSize = 16;
+
         private List<List<Node>> gridMapData;
 
         // Obstacles
         private List<Node> obstacleNodes;
+
         private int minObstacleLength = 3;
         private int maxObstacleLength;
 

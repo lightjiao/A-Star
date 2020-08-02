@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace A_Star.UI
@@ -59,21 +57,27 @@ namespace A_Star.UI
                 case Algorithm.Node.NodeState.None:
                     nodeColor = NodeColor.DefaultWhite;
                     break;
+
                 case Algorithm.Node.NodeState.Start:
                     nodeColor = NodeColor.Green;
                     break;
+
                 case Algorithm.Node.NodeState.Destination:
                     nodeColor = NodeColor.Red;
                     break;
+
                 case Algorithm.Node.NodeState.Finding:
                     nodeColor = NodeColor.Blue;
                     break;
+
                 case Algorithm.Node.NodeState.Obstacle:
                     nodeColor = NodeColor.Black;
                     break;
+
                 case Algorithm.Node.NodeState.ResultPath:
                     nodeColor = NodeColor.Green;
                     break;
+
                 default:
                     nodeColor = NodeColor.DefaultWhite;
                     break;
@@ -97,15 +101,19 @@ namespace A_Star.UI
                 case NodeColor.Red:
                     node.SetRed();
                     break;
+
                 case NodeColor.Green:
                     node.SetGreen();
                     break;
+
                 case NodeColor.Blue:
                     node.SetBlue();
                     break;
+
                 case NodeColor.Black:
                     node.SetBlack();
                     break;
+
                 case NodeColor.DefaultWhite:
                 default:
                     node.SetDefaultWhite();
