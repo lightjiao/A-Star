@@ -48,7 +48,7 @@ namespace A_Star.UI
             Black,
         }
 
-        public void DrawNode(int x, int y, Algorithm.Node.NodeState nodeState)
+        public void DrawNode(int x, int y, Algorithm.Node.NodeState nodeState, int num)
         {
             NodeColor nodeColor;
 
@@ -83,7 +83,7 @@ namespace A_Star.UI
                     break;
             }
 
-            this.drawNode(x, y, nodeColor);
+            this.drawNode(x, y, nodeColor, num);
         }
 
         /// <summary>
@@ -92,7 +92,8 @@ namespace A_Star.UI
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <param name="nodeColor"></param>
-        private void drawNode(int x, int y, NodeColor nodeColor)
+        /// <param name="num">在节点上画一个数字</param>
+        private void drawNode(int x, int y, NodeColor nodeColor, int num)
         {
             // 将坐标系的值转化为grid的child的顺序
             int nodeIndex = (size - y - 1) * size + x;
@@ -100,9 +101,8 @@ namespace A_Star.UI
             // out of range
             if (nodeIndex >= size * size || nodeIndex < 0) return;
 
-            // print((x, y, nodeIndex));
-
             var node = transform.GetChild(nodeIndex).GetComponent<Node>();
+            node.SetNumber(num);
             switch (nodeColor)
             {
                 case NodeColor.Red:

@@ -6,6 +6,12 @@ namespace A_Star.UI
     public class Node : MonoBehaviour
     {
         [SerializeField] private Image image = null;
+        [SerializeField] private Text text = null;
+
+        public void SetNumber(int num)
+        {
+            text.text = num.ToString();
+        }
 
         public void SetBlue()
         {

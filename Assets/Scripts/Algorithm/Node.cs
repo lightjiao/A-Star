@@ -31,7 +31,17 @@ namespace A_Star.Algorithm
         public int X;
         public int Y;
 
-        public int Cost = 0;
+        public int Cost
+        {
+            get { return _cost; }
+            set
+            {
+                _cost = value;
+                DrawUI(this);
+            }
+        }
+
+        private int _cost = 0;
 
         // 用于回溯路径时的记录
         public Node parent = null;

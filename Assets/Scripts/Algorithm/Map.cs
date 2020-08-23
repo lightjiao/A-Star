@@ -60,7 +60,7 @@ namespace A_Star.Algorithm
 
         public void DrawUI_Node(Node node)
         {
-            mapUI.DrawNode(node.X, node.Y, node.State);
+            mapUI.DrawNode(node.X, node.Y, node.State, node.Cost);
         }
 
         public Node GetStartNode()

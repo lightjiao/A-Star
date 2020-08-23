@@ -150,8 +150,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fc89616d67f5b143a11a496b88cda29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapType: 0
-  mapSize: 50
+  mapType: 1
+  mapSize: 20
 --- !u!4 &296854880
 Transform:
   m_ObjectHideFlags: 0
@@ -300,14 +300,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_UiScaleMode: 1
-  m_ReferencePixelsPerUnit: 100
+  m_ReferencePixelsPerUnit: 1
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 2000, y: 2000}
   m_ScreenMatchMode: 1
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
-  m_FallbackScreenDPI: 96
-  m_DefaultSpriteDPI: 96
+  m_FallbackScreenDPI: 1
+  m_DefaultSpriteDPI: 1
   m_DynamicPixelsPerUnit: 1
 --- !u!223 &832241601
 Canvas:
@@ -675,26 +675,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 832241602}
     m_Modifications:
-    - target: {fileID: 2881110745614840124, guid: 07b4a14b7e47dee4ba172783c9a52655,
-        type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2881110745614840124, guid: 07b4a14b7e47dee4ba172783c9a52655,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2881110745614840124, guid: 07b4a14b7e47dee4ba172783c9a52655,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2881110745614840124, guid: 07b4a14b7e47dee4ba172783c9a52655,
-        type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4503500613054651344, guid: 07b4a14b7e47dee4ba172783c9a52655,
         type: 3}
       propertyPath: m_LocalPosition.x
