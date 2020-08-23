@@ -130,7 +130,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 296854880}
-  - component: {fileID: 296854879}
   - component: {fileID: 296854878}
   m_Layer: 0
   m_Name: Algorithm
@@ -151,21 +150,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fc89616d67f5b143a11a496b88cda29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tickPerSecond: 50
---- !u!114 &296854879
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 296854877}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 37ab4e4498e2f1f489b490dac2616303, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gridUI: {fileID: 5977282291935198193}
-  gridSize: 50
+  mapType: 0
+  mapSize: 50
 --- !u!4 &296854880
 Transform:
   m_ObjectHideFlags: 0
@@ -821,15 +807,3 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 07b4a14b7e47dee4ba172783c9a52655, type: 3}
---- !u!114 &5977282291935198193 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7821687544491977892, guid: 07b4a14b7e47dee4ba172783c9a52655,
-    type: 3}
-  m_PrefabInstance: {fileID: 4503500611807680341}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12b991f9ddd41e84191377cc8fa50464, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

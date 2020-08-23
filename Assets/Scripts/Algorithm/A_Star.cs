@@ -24,38 +24,55 @@ namespace A_Star.Algorithm
 
     public class A_Star : MonoBehaviour
     {
-        [SerializeField] private float tickPerSecond = 3;
+        [Tooltip("地图类型")]
+        [SerializeField]
+        private MapGenerator.Type mapType = MapGenerator.Type.巨字形;
+
+        [Tooltip("地图大小")]
+        [SerializeField]
+        private int mapSize = 16;
+
+        //[Tooltip("帧数")]
+        //[SerializeField]
+        private float tickPerSecond;
 
         private float timeBetweenRedraw;
 
+        private Map map;
         private HashSet<Node> openSet;
         private HashSet<Node> closeSet;
 
-        private Map map = null;
-
+        // 当前正在运行的协程
         private Coroutine currentCoroutine = null;
 
         private void Start()
         {
-            map = GetComponent<Map>();
-            map.SetUp();
-
             openSet = new HashSet<Node>();
             closeSet = new HashSet<Node>();
-            timeBetweenRedraw = 1 / tickPerSecond;
 
             StartAlgorithm();
         }
 
+        /// <summary>
+        /// 开始A*算法
+        /// </summary>
         public void StartAlgorithm()
         {
-            map.Clear();
+            // 每秒遍历多少个节点
+            tickPerSecond = mapSize * mapSize / 8;
+            // 获取运行的帧数
+            timeBetweenRedraw = 1 / tickPerSecond;
+
+            map = MapGenerator.GenMap(mapType, mapSize);
             openSet.Clear();
             closeSet.Clear();
 
             startAlgorithmWrapper();
         }
 
+        /// <summary>
+        /// 控制当前运行的协程的wrapper
+        /// </summary>
         private void startAlgorithmWrapper()
         {
             if (currentCoroutine != null)
@@ -66,16 +83,21 @@ namespace A_Star.Algorithm
             currentCoroutine = StartCoroutine(algorithm());
         }
 
-        private IEnumerator reDraw()
+        /// <summary>
+        /// 算法动态展示的间隔时间
+        /// </summary>
+        /// <returns></returns>
+        private IEnumerator interval()
         {
             yield return new WaitForSeconds(timeBetweenRedraw);
-            map.Redraw();
         }
 
+        /// <summary>
+        /// A* 算法本体
+        /// </summary>
+        /// <returns></returns>
         private IEnumerator algorithm()
         {
-            map.Redraw();
-
             var startNode = map.GetStartNode();
             startNode.Cost = 0;
             addToOpenSet(startNode);
@@ -106,8 +128,6 @@ namespace A_Star.Algorithm
                     }
                 }
             }
-
-            map.Redraw();
         }
 
         private void calculateCost(Node node)
@@ -132,11 +152,16 @@ namespace A_Star.Algorithm
             }
         }
 
+        /// <summary>
+        /// 加入到已经遍历过的集合中
+        /// </summary>
+        /// <param name="node"></param>
+        /// <returns></returns>
         private IEnumerator addToCloseSet(Node node)
         {
             node.State = Node.NodeState.Finding;
             closeSet.Add(node);
-            yield return reDraw();
+            yield return interval();
         }
 
         private void removeFromOpenSet(Node node)
@@ -148,7 +173,7 @@ namespace A_Star.Algorithm
         {
             while (node != null)
             {
-                yield return reDraw();
+                yield return interval();
 
                 if (node.State != Node.NodeState.Destination)
                 {
@@ -159,11 +184,19 @@ namespace A_Star.Algorithm
             }
         }
 
+        /// <summary>
+        /// 加入到待遍历的集合
+        /// </summary>
+        /// <param name="node"></param>
         private void addToOpenSet(Node node)
         {
             openSet.Add(node);
         }
 
+        /// <summary>
+        /// 在OpenSet中选择cost最小的一个点
+        /// </summary>
+        /// <returns></returns>
         private Node selecInOpenSet()
         {
             int minCost = int.MaxValue;

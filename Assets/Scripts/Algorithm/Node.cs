@@ -4,6 +4,8 @@ namespace A_Star.Algorithm
 {
     public class Node : IEqualityComparer
     {
+        public Map.drawNodeDelegate DrawUI;
+
         public enum NodeState
         {
             None,
@@ -14,20 +16,31 @@ namespace A_Star.Algorithm
             ResultPath,
         }
 
-        public NodeState State;
+        private NodeState _state;
+
+        public NodeState State
+        {
+            get { return _state; }
+            set
+            {
+                _state = value;
+                DrawUI(this);
+            }
+        }
+
         public int X;
         public int Y;
-        public int Cost;
 
-        public Node parent;
+        public int Cost = 0;
 
-        public Node(int i, int j, NodeState state = NodeState.None, int cost = 0)
+        // 用于回溯路径时的记录
+        public Node parent = null;
+
+        public Node(int i, int j, NodeState state = NodeState.None)
         {
             this.X = i;
             this.Y = j;
-            this.Cost = cost;
-            this.State = state;
-            this.parent = null;
+            this._state = state;
         }
 
         bool IEqualityComparer.Equals(object a, object b)
