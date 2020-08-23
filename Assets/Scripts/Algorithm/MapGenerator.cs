@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace A_Star.Algorithm
@@ -15,6 +16,9 @@ namespace A_Star.Algorithm
         {
             随机,
             口袋形,
+            一字形,
+            二字形,
+            三字形,
         }
 
         static MapGenerator()
@@ -23,6 +27,9 @@ namespace A_Star.Algorithm
             {
                 [Type.随机] = GenRandom,
                 [Type.口袋形] = GenThatMap,
+                [Type.一字形] = (size) => { return GenWithHorizontalObstacle(1, size); },
+                [Type.二字形] = (size) => { return GenWithHorizontalObstacle(2, size); },
+                [Type.三字形] = (size) => { return GenWithHorizontalObstacle(3, size); },
             };
         }
 
@@ -36,6 +43,65 @@ namespace A_Star.Algorithm
 
         // 生成地图的类型和对应的函数映射
         private static Dictionary<Type, GenMapDelegate> funcMap;
+
+        /// <summary>
+        /// 生成带横向障碍物的地图
+        /// </summary>
+        /// <param name="obstacleNum">横向障碍物的数量</param>
+        /// <param name="size"></param>
+        /// <returns></returns>
+        private static Map GenWithHorizontalObstacle(int obstacleNum, int size)
+        {
+            int x = size / (obstacleNum + 1);
+            int obstacleLength = x;
+
+            var obstacleHead = new List<Node>();
+            for (int i = 1; i <= obstacleNum; i++)
+            {
+                obstacleHead.Add(new Node(x * i, x * i));
+            }
+
+            var obstacles = new List<Node>(obstacleHead);
+
+            // 获取向左上角蔓延的节点
+            Func<Node, List<Node>> GetUpLeftNode = (Node n) =>
+            {
+                var list = new List<Node>();
+                list.Add(new Node(n.X - 1, n.Y));
+                list.Add(new Node(n.X - 1, n.Y + 1));
+                return list;
+            };
+            // 获取向右下角蔓延的节点
+            Func<Node, List<Node>> GetDownRigheNode = (Node n) =>
+            {
+                var list = new List<Node>();
+                list.Add(new Node(n.X + 1, n.Y));
+                list.Add(new Node(n.X + 1, n.Y - 1));
+                return list;
+            };
+
+            foreach (var node in obstacleHead)
+            {
+                var upLeftNode = node;
+                var downRigheNode = node;
+                for (int i = 0; i < obstacleLength / 2; i++)
+                {
+                    foreach (var newNode in GetUpLeftNode(upLeftNode))
+                    {
+                        obstacles.Add(newNode);
+                        upLeftNode = newNode;
+                    }
+
+                    foreach (var newNode in GetDownRigheNode(downRigheNode))
+                    {
+                        obstacles.Add(newNode);
+                        downRigheNode = newNode;
+                    }
+                }
+            }
+
+            return new Map(size, obstacles);
+        }
 
         /// <summary>
         /// 生成一个巨字形的地图
@@ -97,8 +163,8 @@ namespace A_Star.Algorithm
             var obstacleHead = new List<Node>();
             for (int i = 0; i < obstacleNumber; i++)
             {
-                int randX = Random.Range(0, size);
-                int randY = Random.Range(0, size);
+                int randX = UnityEngine.Random.Range(0, size);
+                int randY = UnityEngine.Random.Range(0, size);
                 obstacleHead.Add(new Node(randX, randY));
             }
 
@@ -126,7 +192,7 @@ namespace A_Star.Algorithm
                 int newY = node.Y;
 
                 int xAddition = 1;
-                int yAddition = Random.Range(-1, 2);
+                int yAddition = UnityEngine.Random.Range(-1, 2);
                 for (int i = 0; i < obstacleLength; i++)
                 {
                     newX += xAddition;
