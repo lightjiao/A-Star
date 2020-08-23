@@ -8,11 +8,11 @@ namespace A_Star.UI
         [SerializeField] private GameObject background = null;
         [SerializeField] private Node nodePrefab = null;
 
-        private int gridSize;
+        private int size;
 
         public void SetUp(int gridSize)
         {
-            this.gridSize = gridSize;
+            this.size = gridSize;
 
             var glg = GetComponent<GridLayoutGroup>();
             glg.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
@@ -86,12 +86,19 @@ namespace A_Star.UI
             this.drawNode(x, y, nodeColor);
         }
 
+        /// <summary>
+        /// 直角坐标系, 横坐标x, 纵坐标y, 左下角是(0, 0), 右上角是(size, size)
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="nodeColor"></param>
         private void drawNode(int x, int y, NodeColor nodeColor)
         {
-            int nodeIndex = x + y * gridSize;
+            // 将坐标系的值转化为grid的child的顺序
+            int nodeIndex = (size - y - 1) * size + x;
 
             // out of range
-            if (nodeIndex >= gridSize * gridSize || nodeIndex < 0) return;
+            if (nodeIndex >= size * size || nodeIndex < 0) return;
 
             // print((x, y, nodeIndex));
 
