@@ -26,7 +26,7 @@ namespace A_Star.Algorithm
     {
         [Tooltip("地图类型")]
         [SerializeField]
-        private MapGenerator.Type mapType = MapGenerator.Type.巨字形;
+        private MapGenerator.Type mapType = MapGenerator.Type.随机;
 
         [Tooltip("地图大小")]
         [SerializeField]

@@ -14,7 +14,7 @@ namespace A_Star.Algorithm
         public enum Type
         {
             随机,
-            巨字形,
+            口袋形,
         }
 
         static MapGenerator()
@@ -22,7 +22,7 @@ namespace A_Star.Algorithm
             funcMap = new Dictionary<Type, GenMapDelegate>
             {
                 [Type.随机] = GenRandom,
-                [Type.巨字形] = GenThatMap
+                [Type.口袋形] = GenThatMap,
             };
         }
 
@@ -43,6 +43,35 @@ namespace A_Star.Algorithm
         /// <returns></returns>
         public static Map GenThatMap(int size)
         {
+            int minSize = 4;
+            if (size < minSize)
+            {
+                throw new System.Exception($"生成`口袋形`地图时, size不能小于{minSize}");
+            }
+
+            // 默认假设起点是(0, 0), 终点是(size - 1, size - 1)
+            // 起点和终点附近的两个端点
+            int scale = size / 8;
+            var nodeNearStart = new Node(2 * scale, 1 * scale);
+            var nodeNearEnd = new Node(nodeNearStart.Y, size - nodeNearStart.X);
+
+            var obstacles = new List<Node> { nodeNearStart, nodeNearEnd };
+            // 横向填充
+            for (int x = nodeNearStart.X; x < size - nodeNearStart.X; x++)
+            {
+                obstacles.Add(new Node(x, nodeNearStart.Y));
+            }
+            for (int x = nodeNearEnd.X; x < size - nodeNearStart.X; x++)
+            {
+                obstacles.Add(new Node(x, nodeNearEnd.Y));
+            }
+            // 纵向填充
+            for (int y = nodeNearStart.Y; y <= nodeNearEnd.Y; y++)
+            {
+                obstacles.Add(new Node(size - nodeNearStart.X, y));
+            }
+
+            return new Map(size, obstacles);
         }
 
         /// <summary>

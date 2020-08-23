@@ -52,7 +52,7 @@ namespace A_Star.Algorithm
             foreach (var node in obstacles)
             {
                 if (false == isInTheMap(node)) continue;
-                data[node.X][node.Y].State = node.State;
+                data[node.X][node.Y].State = Node.NodeState.Obstacle;
             }
         }
 
