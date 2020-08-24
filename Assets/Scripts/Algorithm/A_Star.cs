@@ -99,6 +99,7 @@ namespace A_Star.Algorithm
         private IEnumerator algorithm()
         {
             var startNode = map.GetStartNode();
+            startNode.BaseCost = 0;
             startNode.Cost = 0;
             addToOpenSet(startNode);
 
@@ -123,16 +124,12 @@ namespace A_Star.Algorithm
                         if (isInOpenSet(aroundNode)) continue;
 
                         aroundNode.parent = node;
-                        calculateCost(aroundNode);
+                        aroundNode.BaseCost = Mathf.Min(node.BaseCost + 1, aroundNode.BaseCost); // 起点距离+1, 记录最小的里起点的距离
+                        aroundNode.Cost = aroundNode.BaseCost + heuristicCost(aroundNode);
                         addToOpenSet(aroundNode);
                     }
                 }
             }
-        }
-
-        private void calculateCost(Node node)
-        {
-            node.Cost = totalCost(node);
         }
 
         private IEnumerable<Node> getAroundNodes(Node node)
@@ -199,7 +196,8 @@ namespace A_Star.Algorithm
         /// <returns></returns>
         private Node selecInOpenSet()
         {
-            int minCost = int.MaxValue;
+            float minCost = float.MaxValue;
+
             Node resultNode = null;
             foreach (var node in openSet)
             {
@@ -223,30 +221,26 @@ namespace A_Star.Algorithm
             return closeSet.Contains(node);
         }
 
-        // g(n)
-        private int baseCost(Node node)
-        {
-            return distance(node, map.GetStartNode());
-        }
-
-        // h(n)
-        private int heuristicCost(Node node)
+        /// <summary>
+        /// 顶点到终点的预期距离, h(n)
+        /// </summary>
+        /// <param name="node"></param>
+        /// <returns></returns>
+        private float heuristicCost(Node node)
         {
             return distance(node, map.GetDestinationNode());
         }
 
-        // f(n) = g(n) + h(n)
-        private int totalCost(Node node)
-        {
-            return baseCost(node) + heuristicCost(node);
-        }
+        // 对角距离代价因子
+        private static int D = 1;
+        private static float D2 = Mathf.Sqrt(2);
 
-        private int distance(Node a, Node b)
+        private float distance(Node a, Node b)
         {
             int dx = Mathf.Abs(a.X - b.X);
             int dy = Mathf.Abs(a.Y - b.Y);
 
-            return Mathf.Min(dx, dy) + Mathf.Abs(dx - dy);
+            return D2 * Mathf.Min(dx, dy) + D * Mathf.Abs(dx - dy);
         }
     }
 }
