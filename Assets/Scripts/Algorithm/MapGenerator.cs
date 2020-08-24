@@ -26,7 +26,7 @@ namespace A_Star.Algorithm
             funcMap = new Dictionary<Type, GenMapDelegate>
             {
                 [Type.随机] = GenRandom,
-                [Type.口袋形] = GenThatMap,
+                [Type.口袋形] = GenBagMap,
                 [Type.一字形] = (size) => { return GenWithHorizontalObstacle(1, size); },
                 [Type.二字形] = (size) => { return GenWithHorizontalObstacle(2, size); },
                 [Type.三字形] = (size) => { return GenWithHorizontalObstacle(3, size); },
@@ -104,10 +104,10 @@ namespace A_Star.Algorithm
         }
 
         /// <summary>
-        /// 生成一个巨字形的地图
+        /// 生成一个口袋形的地图
         /// </summary>
         /// <returns></returns>
-        public static Map GenThatMap(int size)
+        public static Map GenBagMap(int size)
         {
             int minSize = 4;
             if (size < minSize)
@@ -117,9 +117,9 @@ namespace A_Star.Algorithm
 
             // 默认假设起点是(0, 0), 终点是(size - 1, size - 1)
             // 起点和终点附近的两个端点
-            int scale = size / 8;
+            int scale = size / 10;
             var nodeNearStart = new Node(2 * scale, 1 * scale);
-            var nodeNearEnd = new Node(nodeNearStart.Y, size - nodeNearStart.X);
+            var nodeNearEnd = new Node(3 * scale, size - nodeNearStart.Y - 1);
 
             var obstacles = new List<Node> { nodeNearStart, nodeNearEnd };
             // 横向填充
