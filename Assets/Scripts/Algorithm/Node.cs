@@ -31,7 +31,10 @@ namespace A_Star.Algorithm
         public int X;
         public int Y;
 
-        public int Cost
+        /// <summary>
+        /// 总cost
+        /// </summary>
+        public float Cost
         {
             get { return _cost; }
             set
@@ -41,7 +44,18 @@ namespace A_Star.Algorithm
             }
         }
 
-        private int _cost = 0;
+        private float _cost = 0;
+
+        /// <summary>
+        /// 节点距离起点的cost
+        /// </summary>
+        public float BaseCost
+        {
+            get { return _baseCost; }
+            set { _baseCost = value; }
+        }
+
+        private float _baseCost = 0;
 
         // 用于回溯路径时的记录
         public Node parent = null;

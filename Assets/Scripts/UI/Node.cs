@@ -8,9 +8,9 @@ namespace A_Star.UI
         [SerializeField] private Image image = null;
         [SerializeField] private Text text = null;
 
-        public void SetNumber(int num)
+        public void SetNumber(float num)
         {
-            text.text = num.ToString();
+            text.text = num.ToString("f1");
         }
 
         public void SetBlue()
