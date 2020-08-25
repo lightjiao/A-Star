@@ -6,11 +6,32 @@ namespace A_Star.UI
     public class Node : MonoBehaviour
     {
         [SerializeField] private Image image = null;
-        [SerializeField] private Text text = null;
 
-        public void SetNumber(float num)
+        [SerializeField]
+        [Header("Cost")]
+        private Text cost = null;
+
+        [SerializeField]
+        [Header("BaseCost")]
+        private Text baseCost = null;
+
+        [SerializeField]
+        [Header("HeuCost")]
+        private Text heuCost = null;
+
+        public void SetCost(float num)
         {
-            text.text = num.ToString("f1");
+            cost.text = num.ToString("f1");
+        }
+
+        public void SetBaseCost(float num)
+        {
+            baseCost.text = num.ToString("f1");
+        }
+
+        public void SetHeuCost(float num)
+        {
+            heuCost.text = num.ToString("f1");
         }
 
         public void SetBlue()
