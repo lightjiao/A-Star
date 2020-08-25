@@ -55,7 +55,7 @@ namespace A_Star.Algorithm
             set { _baseCost = value; }
         }
 
-        private float _baseCost = 0;
+        private float _baseCost = float.MaxValue;
 
         // 用于回溯路径时的记录
         public Node parent = null;

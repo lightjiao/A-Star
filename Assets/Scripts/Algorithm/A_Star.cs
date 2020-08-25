@@ -123,9 +123,11 @@ namespace A_Star.Algorithm
                         if (isInCloseSet(aroundNode)) continue;
                         if (isInOpenSet(aroundNode)) continue;
 
-                        aroundNode.parent = node;
-                        aroundNode.BaseCost = Mathf.Min(node.BaseCost + 1, aroundNode.BaseCost); // 起点距离+1, 记录最小的里起点的距离
+                        var newBaseCost = node.BaseCost + FromAtoB(node, aroundNode);
+                        aroundNode.BaseCost = Mathf.Min(newBaseCost, aroundNode.BaseCost);
                         aroundNode.Cost = aroundNode.BaseCost + heuristicCost(aroundNode);
+                        aroundNode.parent = node;
+
                         addToOpenSet(aroundNode);
                     }
                 }
@@ -228,17 +230,42 @@ namespace A_Star.Algorithm
         /// <returns></returns>
         private float heuristicCost(Node node)
         {
-            return distance(node, map.GetDestinationNode());
+            return 2.5f * AbsDistance(node, map.GetDestinationNode());
         }
 
-        // 对角距离代价因子
-        private static int D = 1;
-        private static float D2 = Mathf.Sqrt(2);
+        // 水平距离代价因子
+        private static readonly int D = 1;
+        // 对焦距离代价因子
+        private static readonly float D2 = Mathf.Sqrt(2);
 
-        private float distance(Node a, Node b)
+        /// <summary>
+        /// 绝对的距离
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        private float AbsDistance(Node a, Node b)
         {
-            int dx = Mathf.Abs(a.X - b.X);
-            int dy = Mathf.Abs(a.Y - b.Y);
+            return Mathf.Abs(FromAtoB(a, b));
+        }
+
+        private float FromAtoB(Node a, Node b)
+        {
+            // 向量
+            int dx = b.X - a.X;
+            int dy = b.Y - a.Y;
+
+            // 向量长度
+            float len = Mathf.Sqrt(dx * dx + dy * dy);
+
+            // 向量的夹角是正还是负
+            var minusFlag = 1;
+            var sin = dy / len;
+
+
+            // 水平方向的负数
+
+
 
             return D2 * Mathf.Min(dx, dy) + D * Mathf.Abs(dx - dy);
         }
